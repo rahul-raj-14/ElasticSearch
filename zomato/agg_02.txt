@@ -1,0 +1,432 @@
+# AGG according to Country wise
+curl XPOST localhost:9200/zomato/rating/_search?pretty=true -d '{
+	"size":0
+	"query": {
+        "match" : {
+            "Country" : "India"
+        }
+    },
+	"aggs" : {
+		"Countries" : {
+			"terms" : {
+				"field" : "Country.keyword"
+			},
+			"aggs" : {
+				"Cuisines" : {
+					"terms" : {
+						"field" : "Cuisines.keyword"
+					},
+					"aggs" : {
+						"Rating Color" : {
+							"terms" : {
+								"field" : "Rating color.keyword"								
+							}
+						}
+					}
+				},
+				"Locality" : {
+					"terms" : {
+						"field" : "Locality.keyword"
+					}
+				}
+			}
+		}
+	}
+}'
+
+#Output
+{
+    "took": 14,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 8652,
+        "max_score": 0,
+        "hits": []
+    },
+    "aggregations": {
+        "Countries": {
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0,
+            "buckets": [
+                {
+                    "key": "India",
+                    "doc_count": 8652,
+                    "Locality": {
+                        "doc_count_error_upper_bound": 69,
+                        "sum_other_doc_count": 7861,
+                        "buckets": [
+                            {
+                                "key": "Connaught Place",
+                                "doc_count": 122
+                            },
+                            {
+                                "key": "Rajouri Garden",
+                                "doc_count": 87
+                            },
+                            {
+                                "key": "Malviya Nagar",
+                                "doc_count": 85
+                            },
+                            {
+                                "key": "Mayur Vihar Phase 1",
+                                "doc_count": 77
+                            },
+                            {
+                                "key": "Defence Colony",
+                                "doc_count": 74
+                            },
+                            {
+                                "key": "Shahdara",
+                                "doc_count": 74
+                            },
+                            {
+                                "key": "Pitampura",
+                                "doc_count": 73
+                            },
+                            {
+                                "key": "Safdarjung",
+                                "doc_count": 69
+                            },
+                            {
+                                "key": "Sector 62",
+                                "doc_count": 66
+                            },
+                            {
+                                "key": "Hauz Khas",
+                                "doc_count": 64
+                            }
+                        ]
+                    },
+                    "Cuisines": {
+                        "doc_count_error_upper_bound": 65,
+                        "sum_other_doc_count": 5172,
+                        "buckets": [
+                            {
+                                "key": "North Indian",
+                                "doc_count": 936,
+                                "Rating Color": {
+                                    "doc_count_error_upper_bound": 0,
+                                    "sum_other_doc_count": 0,
+                                    "buckets": [
+                                        {
+                                            "key": "White",
+                                            "doc_count": 444
+                                        },
+                                        {
+                                            "key": "Orange",
+                                            "doc_count": 366
+                                        },
+                                        {
+                                            "key": "Yellow",
+                                            "doc_count": 92
+                                        },
+                                        {
+                                            "key": "Green",
+                                            "doc_count": 16
+                                        },
+                                        {
+                                            "key": "Red",
+                                            "doc_count": 11
+                                        },
+                                        {
+                                            "key": "Dark Green",
+                                            "doc_count": 7
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "key": "North Indian, Chinese",
+                                "doc_count": 511,
+                                "Rating Color": {
+                                    "doc_count_error_upper_bound": 0,
+                                    "sum_other_doc_count": 0,
+                                    "buckets": [
+                                        {
+                                            "key": "Orange",
+                                            "doc_count": 303
+                                        },
+                                        {
+                                            "key": "White",
+                                            "doc_count": 114
+                                        },
+                                        {
+                                            "key": "Yellow",
+                                            "doc_count": 55
+                                        },
+                                        {
+                                            "key": "Green",
+                                            "doc_count": 19
+                                        },
+                                        {
+                                            "key": "Red",
+                                            "doc_count": 17
+                                        },
+                                        {
+                                            "key": "Dark Green",
+                                            "doc_count": 3
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "key": "Fast Food",
+                                "doc_count": 348,
+                                "Rating Color": {
+                                    "doc_count_error_upper_bound": 0,
+                                    "sum_other_doc_count": 0,
+                                    "buckets": [
+                                        {
+                                            "key": "Orange",
+                                            "doc_count": 150
+                                        },
+                                        {
+                                            "key": "White",
+                                            "doc_count": 126
+                                        },
+                                        {
+                                            "key": "Yellow",
+                                            "doc_count": 56
+                                        },
+                                        {
+                                            "key": "Green",
+                                            "doc_count": 11
+                                        },
+                                        {
+                                            "key": "Red",
+                                            "doc_count": 3
+                                        },
+                                        {
+                                            "key": "Dark Green",
+                                            "doc_count": 2
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "key": "Chinese",
+                                "doc_count": 340,
+                                "Rating Color": {
+                                    "doc_count_error_upper_bound": 0,
+                                    "sum_other_doc_count": 0,
+                                    "buckets": [
+                                        {
+                                            "key": "Orange",
+                                            "doc_count": 150
+                                        },
+                                        {
+                                            "key": "White",
+                                            "doc_count": 130
+                                        },
+                                        {
+                                            "key": "Yellow",
+                                            "doc_count": 38
+                                        },
+                                        {
+                                            "key": "Green",
+                                            "doc_count": 14
+                                        },
+                                        {
+                                            "key": "Red",
+                                            "doc_count": 8
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "key": "North Indian, Mughlai",
+                                "doc_count": 334,
+                                "Rating Color": {
+                                    "doc_count_error_upper_bound": 0,
+                                    "sum_other_doc_count": 0,
+                                    "buckets": [
+                                        {
+                                            "key": "Orange",
+                                            "doc_count": 185
+                                        },
+                                        {
+                                            "key": "Yellow",
+                                            "doc_count": 71
+                                        },
+                                        {
+                                            "key": "White",
+                                            "doc_count": 40
+                                        },
+                                        {
+                                            "key": "Green",
+                                            "doc_count": 25
+                                        },
+                                        {
+                                            "key": "Red",
+                                            "doc_count": 9
+                                        },
+                                        {
+                                            "key": "Dark Green",
+                                            "doc_count": 4
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "key": "Cafe",
+                                "doc_count": 279,
+                                "Rating Color": {
+                                    "doc_count_error_upper_bound": 0,
+                                    "sum_other_doc_count": 0,
+                                    "buckets": [
+                                        {
+                                            "key": "Orange",
+                                            "doc_count": 132
+                                        },
+                                        {
+                                            "key": "Yellow",
+                                            "doc_count": 75
+                                        },
+                                        {
+                                            "key": "White",
+                                            "doc_count": 47
+                                        },
+                                        {
+                                            "key": "Green",
+                                            "doc_count": 18
+                                        },
+                                        {
+                                            "key": "Red",
+                                            "doc_count": 4
+                                        },
+                                        {
+                                            "key": "Dark Green",
+                                            "doc_count": 3
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "key": "Bakery",
+                                "doc_count": 216,
+                                "Rating Color": {
+                                    "doc_count_error_upper_bound": 0,
+                                    "sum_other_doc_count": 0,
+                                    "buckets": [
+                                        {
+                                            "key": "Orange",
+                                            "doc_count": 96
+                                        },
+                                        {
+                                            "key": "White",
+                                            "doc_count": 88
+                                        },
+                                        {
+                                            "key": "Yellow",
+                                            "doc_count": 27
+                                        },
+                                        {
+                                            "key": "Red",
+                                            "doc_count": 3
+                                        },
+                                        {
+                                            "key": "Green",
+                                            "doc_count": 2
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "key": "North Indian, Mughlai, Chinese",
+                                "doc_count": 197,
+                                "Rating Color": {
+                                    "doc_count_error_upper_bound": 0,
+                                    "sum_other_doc_count": 0,
+                                    "buckets": [
+                                        {
+                                            "key": "Orange",
+                                            "doc_count": 122
+                                        },
+                                        {
+                                            "key": "White",
+                                            "doc_count": 33
+                                        },
+                                        {
+                                            "key": "Yellow",
+                                            "doc_count": 29
+                                        },
+                                        {
+                                            "key": "Red",
+                                            "doc_count": 9
+                                        },
+                                        {
+                                            "key": "Green",
+                                            "doc_count": 4
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "key": "Bakery, Desserts",
+                                "doc_count": 170,
+                                "Rating Color": {
+                                    "doc_count_error_upper_bound": 0,
+                                    "sum_other_doc_count": 0,
+                                    "buckets": [
+                                        {
+                                            "key": "Orange",
+                                            "doc_count": 72
+                                        },
+                                        {
+                                            "key": "White",
+                                            "doc_count": 54
+                                        },
+                                        {
+                                            "key": "Yellow",
+                                            "doc_count": 31
+                                        },
+                                        {
+                                            "key": "Green",
+                                            "doc_count": 10
+                                        },
+                                        {
+                                            "key": "Dark Green",
+                                            "doc_count": 3
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "key": "Street Food",
+                                "doc_count": 149,
+                                "Rating Color": {
+                                    "doc_count_error_upper_bound": 0,
+                                    "sum_other_doc_count": 0,
+                                    "buckets": [
+                                        {
+                                            "key": "White",
+                                            "doc_count": 54
+                                        },
+                                        {
+                                            "key": "Orange",
+                                            "doc_count": 50
+                                        },
+                                        {
+                                            "key": "Yellow",
+                                            "doc_count": 39
+                                        },
+                                        {
+                                            "key": "Green",
+                                            "doc_count": 6
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

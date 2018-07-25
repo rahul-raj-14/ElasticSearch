@@ -1,0 +1,254 @@
+# AGG according to Country wise
+curl XPOST localhost:9200/zomato/rating/_search?pretty=true -d '{
+	"aggs" : {
+		"Countries" : {
+			"terms" : {
+				"field" : "Country.keyword"
+			}
+		}
+	}
+}'
+
+# Output
+{
+    "took": 40,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 9552,
+        "max_score": 0,
+        "hits": []
+    },
+    "aggregations": {
+        "Countries": {
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 85,        # Here other document are also there but elastic search not giving in the search
+            "buckets": [
+                {
+                    "key": "India",
+                    "doc_count": 8652
+                },
+                {
+                    "key": "United States",
+                    "doc_count": 434
+                },
+                {
+                    "key": "United Kingdom",
+                    "doc_count": 80
+                },
+                {
+                    "key": "Brazil",
+                    "doc_count": 60
+                },
+                {
+                    "key": "South Africa",
+                    "doc_count": 60
+                },
+                {
+                    "key": "UAE",
+                    "doc_count": 60
+                },
+                {
+                    "key": "New Zealand",
+                    "doc_count": 40
+                },
+                {
+                    "key": "Turkey",
+                    "doc_count": 34
+                },
+                {
+                    "key": "Australia",
+                    "doc_count": 24
+                },
+                {
+                    "key": "Phillipines",
+                    "doc_count": 22
+                }
+            ]
+        }
+    }
+}
+
+# AGG according to Country wise other version
+curl XPOST localhost:9200/zomato/rating/_search?pretty=true -d '{
+	"aggs" : {
+		"Countries" : {
+			"composite" : {
+                "sources" : [{
+                	"Country":{
+                		"terms" : {
+							"field" : "Country.keyword"
+						}
+					}
+				}]
+			}
+		}
+	}
+}'
+
+# Output
+{
+    "took": 153,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 9552,
+        "max_score": 0,
+        "hits": []
+    },
+    "aggregations": {
+        "Countries": {
+            "after_key": {
+                "Country": "South Africa"
+            },
+            "buckets": [
+                {
+                    "key": {
+                        "Country": "Australia"
+                    },
+                    "doc_count": 24
+                },
+                {
+                    "key": {
+                        "Country": "Brazil"
+                    },
+                    "doc_count": 60
+                },
+                {
+                    "key": {
+                        "Country": "Canada"
+                    },
+                    "doc_count": 4
+                },
+                {
+                    "key": {
+                        "Country": "India"
+                    },
+                    "doc_count": 8652
+                },
+                {
+                    "key": {
+                        "Country": "Indonesia"
+                    },
+                    "doc_count": 21
+                },
+                {
+                    "key": {
+                        "Country": "New Zealand"
+                    },
+                    "doc_count": 40
+                },
+                {
+                    "key": {
+                        "Country": "Phillipines"
+                    },
+                    "doc_count": 22
+                },
+                {
+                    "key": {
+                        "Country": "Qatar"
+                    },
+                    "doc_count": 20
+                },
+                {
+                    "key": {
+                        "Country": "Singapore"
+                    },
+                    "doc_count": 20
+                },
+                {
+                    "key": {
+                        "Country": "South Africa"
+                    },
+                    "doc_count": 60
+                }
+            ]
+        }
+    }
+}
+
+# Now get the remaining results
+# AGG according to Country wise other version
+curl XPOST localhost:9200/zomato/rating/_search?pretty=true -d '{
+	"size":0,
+	"aggs" : {
+		"Countries" : {
+			"composite" : {
+                "sources" : [{
+                	"Country":{
+                		"terms" : {
+							"field" : "Country.keyword"
+						}
+					}
+				}],
+				"after": { "Country": "South Africa" } 
+			}
+		}
+	}
+}'
+
+# Output
+{
+    "took": 14,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 9552,
+        "max_score": 0,
+        "hits": []
+    },
+    "aggregations": {
+        "Countries": {
+            "after_key": {
+                "Country": "United States"
+            },
+            "buckets": [
+                {
+                    "key": {
+                        "Country": "Sri Lanka"
+                    },
+                    "doc_count": 20
+                },
+                {
+                    "key": {
+                        "Country": "Turkey"
+                    },
+                    "doc_count": 34
+                },
+                {
+                    "key": {
+                        "Country": "UAE"
+                    },
+                    "doc_count": 60
+                },
+                {
+                    "key": {
+                        "Country": "United Kingdom"
+                    },
+                    "doc_count": 80
+                },
+                {
+                    "key": {
+                        "Country": "United States"
+                    },
+                    "doc_count": 434
+                }
+            ]
+        }
+    }
+}
