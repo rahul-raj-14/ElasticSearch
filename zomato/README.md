@@ -1,6 +1,5 @@
-### Context
+#### Context
 We all want to know about the good food and quality of food in our area.
-
 #### Content
 Content is placed in the data/zomato folder
 1. We Used zomato.json for our research which is combination of Country-Code.xlsx and zomato.csv
@@ -10,5 +9,5 @@ Content is placed in the data/zomato folder
 
 #### Research
 1. Different type of aggregation provided by the elastic search.
-	1.1 In agg_01.txt we are getting the result according to the Country (records according to Country)
-	1.2 In agg_02.txt we try to achieve the aggregation according to Country(India) and Locality ,Country(India) and (Cuisines and Rating Colors)
+2. In agg_01.txt we are getting the result according to the Country (records according to Country)
+3. In agg_02.txt we try to achieve the aggregation according to Country(India) and Locality ,Country(India) and (Cuisines and Rating Colors)
