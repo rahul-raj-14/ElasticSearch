@@ -1,0 +1,62 @@
+# Signigicant Text Aggerigation
+curl XPOST localhost:9200/zomato/rating/_search?pretty=true -d '{
+	"size":0,
+    "query" : {
+        "match" : {"Cuisines" : "North Indian"}
+    },
+    "aggregations" : {
+        "my_sample" : {
+            "sampler" : {
+                "shard_size" : 100
+            },
+            "aggregations": {
+                "keywords" : {
+                    "significant_text" : { "field" : "Cuisines" }
+                }
+            }
+        }
+    }
+}'
+
+#Output
+{
+    "took": 162,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 4264,
+        "max_score": 0,
+        "hits": []
+    },
+    "aggregations": {
+        "my_sample": {
+            "doc_count": 500,
+            "keywords": {
+                "doc_count": 500,
+                "bg_count": 9552,
+                "buckets": [
+                    {
+                        "key": "north",
+                        "doc_count": 500,
+                        "score": 1.4084720121028746,
+                        "bg_count": 3966
+                    },
+                    {
+                        "key": "indian",
+                        "doc_count": 500,
+                        "score": 1.242779995304062,
+                        "bg_count": 4259
+                    }
+                ]
+            }
+        }
+    }
+}
+
+Note :- Here we search for the 'North Indian' in Cuisines the result shows 'north' is strongly associated with North Indian. 
+It only occurs 3966 times in our index as a whole (see the bg_count) and yet 500 of these were lucky enough to appear in our sample.
